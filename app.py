@@ -9,9 +9,9 @@ from flask_restful import Api,Resource,reqparse
 import pickle
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
-CORS(app)
 
 
 spotify_data = pd.read_csv('data.csv.zip')
