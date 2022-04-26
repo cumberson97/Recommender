@@ -3,12 +3,15 @@ from urllib import response
 import numpy as np
 import pandas as pd
 import spotipy
+from flask_cors import CORS
 from flask import Flask,request ,json
 from flask_restful import Api,Resource,reqparse
 import pickle
 
 app = Flask(__name__)
 api = Api(app)
+
+CORS(app)
 
 
 spotify_data = pd.read_csv('data.csv.zip')
