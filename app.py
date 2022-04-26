@@ -16,16 +16,6 @@ genre_data = pd.read_csv('data_by_genres.csv')
 data_by_year = pd.read_csv('data_by_year.csv')
 
 
-
-
-
-
-
-
-
-from sklearn.decomposition import PCA
-
-
 from spotipy.oauth2 import SpotifyClientCredentials
 from collections import defaultdict
 
@@ -120,11 +110,6 @@ def recommend_songs( song_list, spotify_data, n_songs=10):
     rec_songs = rec_songs[~rec_songs['name'].isin(song_dict['name'])]
     return rec_songs[metadata_cols].to_dict(orient='records')
 
-test=recommend_songs([{'name': 'Come As You Are', 'year':1991},
-                {'name': 'Smells Like Teen Spirit', 'year': 1991},
-                {'name': 'Lithium', 'year': 1992},
-                {'name': 'All Apologies', 'year': 1993},
-                {'name': 'Stay Away', 'year': 1993}],  spotify_data)
 
 toAdd = reqparse.RequestParser();
 
