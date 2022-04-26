@@ -4,11 +4,17 @@ import numpy as np
 import pandas as pd
 import spotipy
 
-from flask import Flask,request ,json
+from flask import Flask,request ,json,make_response
 from flask_restful import Api,Resource,reqparse
+
+from flask_cors import CORS
+
+
 import pickle
 
 app = Flask(__name__)
+
+CORS(app, resources={r"/reccomend": {"origins":"*"}})
 
 api = Api(app)
 
@@ -119,10 +125,10 @@ toAdd = reqparse.RequestParser();
 
 class Recomender(Resource):
     
-    def get(self): 
+    def post(self): 
         text=request.get_json()
         req=[text]
-        response=recommend_songs(req,spotify_data)     
+        response=recommend_songs(req,spotify_data)  
         return response
 
 api.add_resource(Recomender,'/reccomend')
@@ -130,7 +136,7 @@ api.add_resource(Recomender,'/reccomend')
 
 if __name__ == '__main__':
     
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
-    #app.run(debug=True)
+    #port = int(os.environ.get("PORT", 5000))
+    #app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(debug=True)
 
