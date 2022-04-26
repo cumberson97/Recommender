@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b07f70149bf5f963cabe7fc4d7e0ab4fc0344fc20a6ed06beb12f04741a4a1ed"
+            "sha256": "ab24809663af4b3853b5bd815be4afd214ba9f7bde2958ad73f98fba8ecd9665"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -208,6 +208,13 @@
             ],
             "index": "pypi",
             "version": "==1.4.2"
+        },
+        "pickle-mixin": {
+            "hashes": [
+                "sha256:d4983cd09939f6e402c69ba4f4200f2e6ccdfd39c020f6d1091290d78f17625c"
+            ],
+            "index": "pypi",
+            "version": "==1.0.2"
         },
         "python-dateutil": {
             "hashes": [

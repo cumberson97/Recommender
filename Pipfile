@@ -11,6 +11,7 @@ numpy = "*"
 flask = "*"
 flask-restful = "*"
 gunicorn = "*"
+pickle-mixin = "*"
 
 [dev-packages]
 

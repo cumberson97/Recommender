@@ -5,7 +5,7 @@ import pandas as pd
 import spotipy
 from flask import Flask,request ,json
 from flask_restful import Api,Resource,reqparse
-
+import pickle
 
 app = Flask(__name__)
 api = Api(app)
@@ -15,44 +15,16 @@ spotify_data = pd.read_csv('data.csv.zip')
 genre_data = pd.read_csv('data_by_genres.csv')
 data_by_year = pd.read_csv('data_by_year.csv')
 
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
 
-cluster_pipeline = Pipeline([('scaler', StandardScaler()), ('kmeans', KMeans(n_clusters=10))])
 
-X = genre_data.select_dtypes(np.number)
-cluster_pipeline.fit(X)
-genre_data['cluster'] = cluster_pipeline.predict(X)
 
-from sklearn.manifold import TSNE
 
-tsne_pipeline = Pipeline([('scaler', StandardScaler()), ('tsne', TSNE(n_components=2, verbose=2))])
-genre_embedding = tsne_pipeline.fit_transform(X)
 
-projection = pd.DataFrame(columns=['x', 'y'], data=genre_embedding)
-projection['genres'] = genre_data['genres']
-projection['cluster'] = genre_data['cluster']
 
-song_cluster_pipeline = Pipeline([('scaler', StandardScaler()), 
-                                  ('kmeans', KMeans(n_clusters=20, 
-                                   verbose=2))], verbose=True)
-X = spotify_data.select_dtypes(np.number)
-number_cols = list(X.columns)
-song_cluster_pipeline.fit(X)
 
-song_cluster_labels = song_cluster_pipeline.predict(X)
-
-spotify_data['cluster_label'] = song_cluster_labels
 
 from sklearn.decomposition import PCA
 
-pca_pipeline = Pipeline([('scaler', StandardScaler()), ('PCA', PCA(n_components=2))])
-song_embedding = pca_pipeline.fit_transform(X)
-
-projection = pd.DataFrame(columns=['x', 'y'], data=song_embedding)
-projection['title'] = spotify_data['name']
-projection['cluster'] = spotify_data['cluster_label']
 
 from spotipy.oauth2 import SpotifyClientCredentials
 from collections import defaultdict
@@ -131,14 +103,14 @@ def flatten_dict_list(dict_list):
             
     return flattened_dict
         
-
+loaded_model = pickle.load(open("TheGoodGood.sav", 'rb'))
 def recommend_songs( song_list, spotify_data, n_songs=10):
     
     metadata_cols = ['name', 'year', 'artists']
     song_dict = flatten_dict_list(song_list)
     
     song_center = get_mean_vector(song_list, spotify_data)
-    scaler = song_cluster_pipeline.steps[0][1]
+    scaler = loaded_model.steps[0][1]
     scaled_data = scaler.transform(spotify_data[number_cols])
     scaled_song_center = scaler.transform(song_center.reshape(1, -1))
     distances = cdist(scaled_song_center, scaled_data, 'cosine')
@@ -169,6 +141,8 @@ api.add_resource(Recomender,'/reccomend')
 
 
 if __name__ == '__main__':
+    
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
+    #app.run(debug=True)
 
