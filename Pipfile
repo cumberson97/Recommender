@@ -12,6 +12,7 @@ flask = "*"
 flask-restful = "*"
 gunicorn = "*"
 pickle-mixin = "*"
+flask-cors = "*"
 
 [dev-packages]
 
