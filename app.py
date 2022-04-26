@@ -154,17 +154,17 @@ test=recommend_songs([{'name': 'Come As You Are', 'year':1991},
                 {'name': 'Stay Away', 'year': 1993}],  spotify_data)
 
 toAdd = reqparse.RequestParser();
-toAdd.add_argument("data",type=str,help="Song Name needed",required=True)
+
 
 class Recomender(Resource):
     
-    def get(self,data): 
+    def get(self): 
         text=request.get_json()
         req=[text]
         response=recommend_songs(req,spotify_data)     
         return response
 
-api.add_resource(Recomender,'/recomend/<string:data>')
+api.add_resource(Recomender,'/reccomend')
 
 
 if __name__ == '__main__':
