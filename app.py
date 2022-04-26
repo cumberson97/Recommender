@@ -9,7 +9,7 @@ from flask_restful import Api,Resource,reqparse
 import pickle
 
 app = Flask(__name__)
-cors = CORS(app, resorces={r'/d/*': {"origins": '*'}})
+
 api = Api(app)
 
 
