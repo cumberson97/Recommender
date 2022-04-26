@@ -10,6 +10,7 @@ pandas = "*"
 numpy = "*"
 flask = "*"
 flask-restful = "*"
+gunicorn = "*"
 
 [dev-packages]
 
